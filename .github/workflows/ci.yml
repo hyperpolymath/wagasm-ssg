@@ -1,0 +1,65 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+name: WAT CI
+
+permissions: read-all
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+
+      - name: Install WABT
+        run: |
+          wget -q https://github.com/WebAssembly/wabt/releases/download/1.0.34/wabt-1.0.34-ubuntu.tar.gz
+          tar xzf wabt-1.0.34-ubuntu.tar.gz
+          echo "$PWD/wabt-1.0.34/bin" >> $GITHUB_PATH
+
+      - name: Compile WAT to WASM
+        run: |
+          if [ -f src/wagasm-ssg.wat ]; then
+            wat2wasm src/wagasm-ssg.wat -o src/wagasm-ssg.wasm
+            echo "WAT compiled successfully!"
+          fi
+
+      - name: Validate WASM
+        run: |
+          if [ -f src/wagasm-ssg.wasm ]; then
+            wasm-validate src/wagasm-ssg.wasm
+            echo "WASM validation passed!"
+          fi
+
+  language-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+
+      - name: Verify WAT-only in src/
+        run: |
+          echo "Checking for ABSOLUTELY FORBIDDEN languages in src/..."
+          forbidden=$(find src/ -type f \( -name "*.ts" -o -name "*.js" -o -name "*.rs" -o -name "*.py" \) 2>/dev/null || true)
+          if [ -n "$forbidden" ]; then
+            echo "ERROR: Found FORBIDDEN language files in src/:"
+            echo "$forbidden"
+            echo ""
+            echo "wagasm-ssg MUST be pure WAT. No TypeScript, no AssemblyScript, no Rust!"
+            exit 1
+          fi
+          echo "OK: Only WAT files in src/"
+
+      - name: Verify host runtime is I/O only
+        run: |
+          echo "Checking host runtime doesn't contain SSG logic..."
+          if [ -f runtime/host.ts ]; then
+            if grep -E 'generate|template|markdown|parse|route' runtime/host.ts; then
+              echo "WARNING: Host runtime may contain SSG logic!"
+              echo "The host should ONLY provide I/O imports."
+            fi
+          fi
