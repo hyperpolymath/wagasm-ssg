@@ -1,1 +1,87 @@
+= wagasm-ssg
+:toc: auto
+:toclevels: 3
 
+**EXPERIMENTAL: The pure WebAssembly Text static site generator.**
+
+[WARNING]
+====
+This is an experimental project demonstrating WAT as a source language.
+wagasm-ssg proves that an SSG can be written in pure WebAssembly Text format.
+====
+
+== Overview
+
+wagasm-ssg is an extreme experiment: a static site generator written
+entirely in WebAssembly Text (WAT) format. No AssemblyScript, no Rust
+compiled to WASM - pure hand-written WAT.
+
+== Language Enforcement
+
+[IMPORTANT]
+====
+This SSG **MUST** be written in pure WAT. No exceptions.
+
+**ABSOLUTELY FORBIDDEN** for SSG logic:
+
+* TypeScript (was incorrectly used before as wasm-ssg.ts)
+* JavaScript
+* AssemblyScript (that's TypeScript in disguise)
+* Rust compiled to WASM (defeats the purpose)
+* Any high-level language
+
+The host runtime (`runtime/host.ts`) provides **ONLY I/O**:
+
+* `write_file` - Write bytes to a file
+* `read_file` - Read bytes from a file
+* `log` - Log a message
+
+ALL SSG logic is in the WAT file. The host is a dumb I/O provider.
+====
+
+== Why WAT?
+
+* Proves WAT is viable as a source language, not just a compilation target
+* S-expression syntax (like Lisp/Scheme) is readable
+* Educational value in understanding WASM at the lowest level
+* Extreme challenge by design
+
+== Requirements
+
+* WABT (WebAssembly Binary Toolkit) - for `wat2wasm`
+* Deno (for the host runtime I/O)
+
+== Building
+
+[source,bash]
+----
+# Compile WAT to WASM
+wat2wasm src/wagasm-ssg.wat -o src/wagasm-ssg.wasm
+
+# Run with Deno host
+deno run --allow-read --allow-write runtime/host.ts
+----
+
+== Project Structure
+
+[source]
+----
+wagasm-ssg/
+├── src/                  # WAT source (THE SSG - ALL logic here)
+│   └── wagasm-ssg.wat   # Pure WebAssembly Text
+├── runtime/              # Deno host (ONLY I/O, no SSG logic)
+│   └── host.ts          # File I/O imports for WASM
+├── adapters/             # ReScript MCP adapter only
+├── STATE.scm             # Project state
+├── ECOSYSTEM.scm         # Ecosystem position
+├── META.scm              # Architecture decisions
+└── .claude/CLAUDE.md     # AI guidelines
+----
+
+== Part of poly-ssg
+
+wagasm-ssg is a satellite of the https://github.com/hyperpolymath/poly-ssg-mcp[poly-ssg-mcp] hub.
+
+== License
+
+AGPL-3.0-or-later
