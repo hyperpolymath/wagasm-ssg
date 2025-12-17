@@ -14,11 +14,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Install WABT
         run: |
           wget -q https://github.com/WebAssembly/wabt/releases/download/1.0.34/wabt-1.0.34-ubuntu.tar.gz
+          echo "42342d6a1227a9ff27b4e4f0068d90f5c6581c81ff66889c36a2b1dbe2c4323c  wabt-1.0.34-ubuntu.tar.gz" | sha256sum -c -
           tar xzf wabt-1.0.34-ubuntu.tar.gz
           echo "$PWD/wabt-1.0.34/bin" >> $GITHUB_PATH
 
@@ -39,7 +40,7 @@ jobs:
   language-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Verify WAT-only in src/
         run: |
