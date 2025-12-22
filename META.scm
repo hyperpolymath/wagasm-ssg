@@ -59,7 +59,28 @@
      (date . "2025-12-15")
      (context . "Part of hyperpolymath ecosystem")
      (decision . "Follow Rhodium Standard Repository guidelines")
-     (consequences . ("RSR Gold target" "SHA-pinned actions" "SPDX headers")))))
+     (consequences . ("RSR Gold target" "SHA-pinned actions" "SPDX headers")))
+    (adr-004
+     (title . "Just + Must Build System")
+     (status . "accepted")
+     (date . "2025-12-22")
+     (context . "Need portable, documented build commands")
+     (decision . "Use Justfile for tasks, Mustfile for required checks")
+     (consequences . ("Cross-platform" "Self-documenting" "CI integration")))
+    (adr-005
+     (title . "Git Hooks for Compliance")
+     (status . "accepted")
+     (date . "2025-12-22")
+     (context . "Language compliance must be enforced pre-commit")
+     (decision . "Pre-commit hook checks for forbidden languages in src/")
+     (consequences . ("Catches violations early" "Prevents bad commits")))
+    (adr-006
+     (title . "SCM File Architecture")
+     (status . "accepted")
+     (date . "2025-12-22")
+     (context . "Project metadata needs structured representation")
+     (decision . "Use Scheme files: STATE, META, ECOSYSTEM, PLAYBOOK, AGENTIC, NEUROSYM")
+     (consequences . ("Machine-readable" "S-expression consistency" "Documentation as code")))))
 
 (define development-practices
   '((code-style
