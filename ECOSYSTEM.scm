@@ -8,6 +8,9 @@
   (type "satellite-ssg")
   (purpose "The EXPERIMENTAL pure WebAssembly Text (WAT) static site generator")
   (status "EXPERIMENTAL")
+  (completion "86%")
+  (components "38/44")
+  (updated "2025-12-22")
 
   (language-identity
     (primary "WebAssembly Text (WAT)")
