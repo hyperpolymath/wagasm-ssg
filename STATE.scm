@@ -4,7 +4,7 @@
 
 (define metadata
   '((version . "0.1.0")
-    (updated . "2025-12-22")
+    (updated . "2025-12-17")
     (project . "wagasm-ssg")
     (required-language . "WebAssembly Text (WAT)")
     (status . "EXPERIMENTAL")))
@@ -162,7 +162,6 @@
   '((project . "wagasm-ssg")
     (language . "WAT")
     (status . "EXPERIMENTAL")
-    (components . "38/44")
-    (completion . 86)
-    (blockers . 2)
-    (updated . "2025-12-22")))
+    (completion . 55)
+    (blockers . 1)
+    (updated . "2025-12-17")))
