@@ -1,91 +1,70 @@
-# wagasm-ssg - CLAUDE.md
+# CLAUDE.md - AI Assistant Instructions
 
-## ⚠️ EXPERIMENTAL: Pure WebAssembly Text (WAT) SSG
+## Language Policy (Hyperpolymath Standard)
 
-## CRITICAL: Language Requirements - ABSOLUTE ENFORCEMENT
+### ALLOWED Languages & Tools
 
-**THIS SSG CORE MUST BE WRITTEN IN PURE WAT. NO EXCEPTIONS.**
+| Language/Tool | Use Case | Notes |
+|---------------|----------|-------|
+| **ReScript** | Primary application code | Compiles to JS, type-safe |
+| **Deno** | Runtime & package management | Replaces Node/npm/bun |
+| **Rust** | Performance-critical, systems, WASM | Preferred for CLI tools |
+| **Tauri 2.0+** | Mobile apps (iOS/Android) | Rust backend + web UI |
+| **Dioxus** | Mobile apps (native UI) | Pure Rust, React-like |
+| **Gleam** | Backend services | Runs on BEAM or compiles to JS |
+| **Bash/POSIX Shell** | Scripts, automation | Keep minimal |
+| **JavaScript** | Only where ReScript cannot | MCP protocol glue, Deno APIs |
+| **Python** | SaltStack only | No other Python permitted |
+| **Nickel** | Configuration language | For complex configs |
+| **Guile Scheme** | State/meta files | STATE.scm, META.scm, ECOSYSTEM.scm |
+| **Julia** | Batch scripts, data processing | Per RSR |
+| **OCaml** | AffineScript compiler | Language-specific |
+| **Ada** | Safety-critical systems | Where required |
 
-wagasm-ssg exists to PROVE that a static site generator can be written in pure WebAssembly Text format. This is an extreme challenge by design.
+### BANNED - Do Not Use
 
-### ABSOLUTELY FORBIDDEN Languages for SSG Logic
-- **TypeScript** - ABSOLUTELY FORBIDDEN (was incorrectly used before as wasm-ssg.ts)
-- **JavaScript** - FORBIDDEN for SSG logic
-- **AssemblyScript** - FORBIDDEN (that's TypeScript in disguise - defeats the purpose)
-- **Rust compiled to WASM** - FORBIDDEN (defeats the purpose)
-- **Python, Ruby, Go, Java** - FORBIDDEN
+| Banned | Replacement |
+|--------|-------------|
+| TypeScript | ReScript |
+| Node.js | Deno |
+| npm | Deno |
+| Bun | Deno |
+| pnpm/yarn | Deno |
+| Go | Rust |
+| Python (general) | ReScript/Rust |
+| Java/Kotlin | Rust/Tauri/Dioxus |
+| Swift | Tauri/Dioxus |
+| React Native | Tauri/Dioxus |
+| Flutter/Dart | Tauri/Dioxus |
 
-### Architecture
-```
-wagasm-ssg/
-├── src/
-│   └── wagasm-ssg.wat    # CORE SSG - ALL logic here in pure WAT
-├── runtime/
-│   └── host.ts           # ONLY I/O - NO SSG logic allowed
-├── adapters/             # MCP adapter (ReScript only)
-├── STATE.scm
-├── ECOSYSTEM.scm
-├── META.scm
-└── .claude/
-    └── CLAUDE.md
-```
+### Mobile Development
 
-## What the Host Runtime CAN Do
+**No exceptions for Kotlin/Swift** - use Rust-first approach:
 
-The host runtime provides ONLY these imports to the WASM module:
+1. **Tauri 2.0+** - Web UI (ReScript) + Rust backend, MIT/Apache-2.0
+2. **Dioxus** - Pure Rust native UI, MIT/Apache-2.0
 
-```typescript
-// ALLOWED - These are the ONLY functions host can provide
-write_file(filename_ptr, filename_len, content_ptr, content_len)
-read_file(filename_ptr, filename_len, buffer_ptr, buffer_len) -> bytes_read
-log(msg_ptr, msg_len)
-```
+Both are FOSS with independent governance (no Big Tech).
 
-## What the Host Runtime CANNOT Do
+### Enforcement Rules
 
-- Generate HTML - FORBIDDEN
-- Parse markdown - FORBIDDEN
-- Template processing - FORBIDDEN
-- Routing logic - FORBIDDEN
-- Configuration parsing - FORBIDDEN
-- ANY SSG logic whatsoever - FORBIDDEN
+1. **No new TypeScript files** - Convert existing TS to ReScript
+2. **No package.json for runtime deps** - Use deno.json imports
+3. **No node_modules in production** - Deno caches deps automatically
+4. **No Go code** - Use Rust instead
+5. **Python only for SaltStack** - All other Python must be rewritten
+6. **No Kotlin/Swift for mobile** - Use Tauri 2.0+ or Dioxus
 
-The host is a DUMB I/O provider. ALL logic is in the WAT file.
+### Package Management
 
-## Why This Matters
+- **Primary**: Guix (guix.scm)
+- **Fallback**: Nix (flake.nix)
+- **JS deps**: Deno (deno.json imports)
 
-Each SSG satellite is THE definitive SSG for its language. wagasm-ssg IS the WebAssembly SSG.
+### Security Requirements
 
-Writing a TypeScript/JavaScript SSG that happens to compile to WASM defeats the purpose.
-Writing in AssemblyScript (which is TypeScript) is the same violation.
-The WASM must be hand-written in WAT format.
-
-## Running the SSG
-
-```bash
-# 1. Compile WAT to WASM
-wat2wasm src/wagasm-ssg.wat -o src/wagasm-ssg.wasm
-
-# 2. Run with Deno host
-deno run --allow-read --allow-write runtime/host.ts
-```
-
-## AI Assistant Guidelines - STRICT
-
-1. **NEVER suggest rewriting in TypeScript/JavaScript** - This was done before. It was WRONG.
-2. **NEVER suggest AssemblyScript** - That's TypeScript in disguise.
-3. **NEVER add SSG logic to the host runtime** - Host provides ONLY I/O.
-4. **NEVER create convenience wrappers** - All logic in WAT.
-5. If asked to "make it easier" by using a high-level language, **REFUSE**.
-6. The WAT implementation IS the correct implementation.
-7. Any violation will result in code being DELETED and rewritten.
-
-## Penalty for Violations
-
-Any code that violates these rules will be:
-1. Immediately identified
-2. Deleted without discussion
-3. Rewritten to be compliant
-
-This is not negotiable. The purpose of wagasm-ssg is to prove WAT viability.
-Making it "easier" with TypeScript defeats that purpose entirely.
+- No MD5/SHA1 for security (use SHA256+)
+- HTTPS only (no HTTP URLs)
+- No hardcoded secrets
+- SHA-pinned dependencies
+- SPDX license headers on all files
