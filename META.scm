@@ -18,8 +18,12 @@
      ("Any high-level language" . "FORBIDDEN for SSG logic"))
     (correct-implementation
      (core-ssg . "src/wagasm-ssg.wat - ALL SSG logic here")
-     (host-runtime . "runtime/host.ts - ONLY I/O, no SSG logic")
-     (mcp-adapter . "adapters/ in ReScript"))))
+     (host-runtime . "runtime/Host.res - ONLY I/O, no SSG logic (compiles to JS for Deno)")
+     (mcp-adapter . "adapters/ in ReScript"))
+    (policy-enforcement
+     (ci-workflow . ".github/workflows/language-policy.yml")
+     (check-script . "scripts/check-language-policy.js")
+     (pre-commit . "hooks/pre-commit"))))
 
 (define strict-enforcement
   '((what-host-can-do
@@ -103,6 +107,15 @@
       It's S-expression syntax (like Lisp/Scheme).
       wagasm-ssg proves that even a compilation target can be a source language.")
     (why-not-typescript
-     "TypeScript was INCORRECTLY used before (wasm-ssg.ts).
-      This violated the core principle: the SSG must BE in its target language.
-      Even AssemblyScript (TS→WASM) would be cheating.")))
+     "TypeScript was INCORRECTLY used before (wasm-ssg.ts and host.ts).
+      This violated both core principles: the SSG must BE in its target language,
+      AND the Hyperpolymath Language Policy bans TypeScript in favor of ReScript.
+      Host runtime has been converted to ReScript (Host.res).
+      Even AssemblyScript (TS→WASM) would be cheating.")
+    (adr-007-ts-to-rescript
+     (title . "TypeScript to ReScript Migration")
+     (status . "accepted")
+     (date . "2025-12-30")
+     (context . "Hyperpolymath Language Policy bans TypeScript")
+     (decision . "Migrate runtime/host.ts to runtime/Host.res")
+     (consequences . ("Policy compliance" "Type-safe Deno host" "Consistent ecosystem")))))
