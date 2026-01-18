@@ -1,56 +1,56 @@
 ;; SPDX-License-Identifier: AGPL-3.0-or-later
-;; SPDX-FileCopyrightText: 2025 Jonathan D.A. Jewell
-;; ECOSYSTEM.scm — wagasm-ssg
+;; SPDX-FileCopyrightText: 2025 hyperpolymath
+;; ECOSYSTEM.scm - Project ecosystem positioning for wagasm-ssg
 
 (ecosystem
-  (version "1.0.0")
+  (version "1.0")
   (name "wagasm-ssg")
-  (type "satellite-ssg")
-  (purpose "The EXPERIMENTAL pure WebAssembly Text (WAT) static site generator")
-  (status "EXPERIMENTAL")
-  (completion "86%")
-  (components "38/44")
-  (updated "2025-12-22")
-
-  (language-identity
-    (primary "WebAssembly Text (WAT)")
-    (description "WAT is the human-readable text format for WebAssembly")
-    (rationale "wagasm-ssg exists to PROVE that an SSG can be written in pure WAT")
-    (host-runtime "Deno/ReScript provides ONLY I/O imports - no SSG logic")
-    (forbidden ("JavaScript" "TypeScript" "AssemblyScript" "Python" "Rust"))
-    (enforcement "ABSOLUTE - Core SSG logic MUST be in WAT. Host provides ONLY I/O."))
-
-  (strict-rules
-    (rule-1 "ALL SSG logic MUST be in src/wagasm-ssg.wat")
-    (rule-2 "Host runtime MUST NOT contain SSG logic")
-    (rule-3 "Host runtime provides ONLY: write_file, read_file, log")
-    (rule-4 "No high-level language wrappers around the WAT")
-    (rule-5 "AssemblyScript is FORBIDDEN - that defeats the purpose")
-    (rule-6 "Any 'convenience' rewrites in JS/TS will be REJECTED"))
+  (type "ssg-engine")
+  (purpose "Proving WebAssembly Text is viable as a source language, not just compilation target")
 
   (position-in-ecosystem
-    "EXPERIMENTAL satellite SSG in the poly-ssg constellation.
-     Demonstrates that even the most impractical target language can build websites.")
+    (role "satellite")
+    (hub "poly-ssg-mcp")
+    (category "esoteric-ssgs")
+    (uniqueness "Hand-written WAT - exploring the boundaries of WASM as a programming paradigm"))
 
   (related-projects
     (project
       (name "poly-ssg-mcp")
-      (url "https://github.com/hyperpolymath/poly-ssg-mcp")
       (relationship "hub")
-      (description "Unified MCP server for 28+ SSGs"))
+      (description "Central MCP orchestrator for all SSG engines")
+      (integration "Provides wagasm adapter for unified SSG access"))
     (project
-      (name "rhodium-standard-repositories")
-      (url "https://github.com/hyperpolymath/rhodium-standard-repositories")
-      (relationship "standard")))
+      (name "brainfuck-ssg")
+      (relationship "sibling")
+      (description "Brainfuck-based SSG")
+      (shared-aspects ("esoteric language" "minimalism" "proving viability")))
+    (project
+      (name "befunge-ssg")
+      (relationship "sibling")
+      (description "Befunge-based SSG")
+      (shared-aspects ("unconventional paradigm" "educational value")))
+    (project
+      (name "anvil-ssg")
+      (relationship "sibling")
+      (description "Rust-based SSG that can compile to WASM")
+      (shared-aspects ("WASM output" "systems-level thinking"))
+      (differences ("anvil compiles TO wasm, wagasm IS wasm")))
+    (project
+      (name "whitespace-ssg")
+      (relationship "sibling")
+      (description "Whitespace language SSG")
+      (shared-aspects ("extreme minimalism" "unconventional syntax"))))
 
   (what-this-is
-    "- EXPERIMENTAL pure WebAssembly Text SSG
-     - Proves WAT can be used as a primary language
-     - Demonstrates extreme low-level web development
-     - Host runtime provides ONLY file I/O (not SSG logic)")
+    ("A static site generator hand-written in WebAssembly Text format")
+    ("A demonstration that WAT is a viable source language")
+    ("An exploration of stack machine programming for real applications")
+    ("An educational resource for learning WAT/WASM internals")
+    ("Part of the poly-ssg esoteric language collection"))
 
   (what-this-is-not
-    "- NOT a TypeScript/JavaScript SSG compiled to WASM
-     - NOT using AssemblyScript (that's TypeScript in disguise)
-     - NOT a wrapper with 'real' logic in the host
-     - NOT optional about being in WAT"))
+    ("Not Rust/C/AssemblyScript compiled to WASM")
+    ("Not a toy project - it actually generates sites")
+    ("Not dependent on high-level abstractions")
+    ("Not limited to WASM experts")))
